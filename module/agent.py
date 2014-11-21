@@ -1,17 +1,24 @@
-"""Example of program which uses [options] shortcut in pattern.
-Usage:
-  options_shortcut_example.py [options] <port>
-Options:
-  -h --help                show this help message and exit
-  --version                show version and exit
-  -n, --number N           use N as a number
-  -t, --timeout TIMEOUT    set timeout TIMEOUT seconds
-  --apply                  apply changes to database
-  -q                       operate in quiet mode
-"""
-from docopt import docopt
+import signal
+import time
 
+class Agent(object):
+	def loop(self):
 
-if __name__ == '__main__':
-    arguments = docopt(__doc__, version='1.0.0rc2')
-    print(arguments)
+		# def sigterm_stop(signum, frame):
+		# 	self._stop = 1
+
+		signal.signal(signal.SIGUSR1, sigterm_stop)
+  #       self.auto_auth()
+  #       self.node_watcher()
+  #       self.loop_tos()
+  #       self.get_job()
+  #       self.run_job()
+  #       self.single_run_job()
+  #       self.send_ret()
+  #       self.crond_clear_job()
+		while 1:
+			# if self._stop:
+			#     break
+			print 111
+			time.sleep(5)
+

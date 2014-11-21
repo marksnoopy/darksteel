@@ -14,7 +14,35 @@ Options:
 
 """
 from docopt import docopt
+from module.agent import Agent
+
+def start():
+	print 'start'
+	agent = Agent()
+	agent.loop()
+
+def stop():
+	print 'stop'
+
+def status():
+	print 'status'
+
+def restart():
+	stop()
+	start()
+
 
 if __name__ == '__main__':
-    arguments = docopt(__doc__, version='Agent 2.0')
-    print arguments
+    arguments = docopt(__doc__, help=True, version='DarkStell Agent 0.1Beta')
+
+    actionDict = {
+    	"start": start,
+    	"stop": stop,
+    	"status": status,
+    	"restart": restart
+    }
+
+    for action in actionDict.keys():
+    	if arguments[action]:
+    		actionDict[action]()
+
