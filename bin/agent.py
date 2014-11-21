@@ -17,9 +17,14 @@ from docopt import docopt
 from module.agent import Agent
 
 def start():
-	print 'start'
-	agent = Agent()
-	agent.loop()
+  try:
+      agent = Agent()
+      agent.run()
+  except KeyboardInterrupt:
+      print 'stop agent ing ...'
+      stop()
+  
+	
 
 def stop():
 	print 'stop'

@@ -1,24 +1,38 @@
 import signal
 import time
 
-class Agent(object):
-	def loop(self):
+from kazoo.client import KazooClient
 
-		# def sigterm_stop(signum, frame):
-		# 	self._stop = 1
+class Agent(object):
+
+
+	
+
+	def run(self):
+
+		def sigterm_stop(signum, frame):
+			print 'kill myself'
+		 	self._stop = 1
+
+
+		
+
+		def register():
+			print 'data modified'
 
 		signal.signal(signal.SIGUSR1, sigterm_stop)
-  #       self.auto_auth()
-  #       self.node_watcher()
-  #       self.loop_tos()
-  #       self.get_job()
-  #       self.run_job()
-  #       self.single_run_job()
-  #       self.send_ret()
-  #       self.crond_clear_job()
+
+		zk = KazooClient(hosts='10.4.250.38:2181')
+		zk.start()
+		
+
+		@zk.ChildrenWatch("/")
+		def watch_children(children):
+			print("Children are now: %s" % children)
+    		time.sleep(5)
+
 		while 1:
-			# if self._stop:
-			#     break
-			print 111
+			children = zk.get_children('/', watch=register)
+		    
 			time.sleep(5)
 
