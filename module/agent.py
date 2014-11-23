@@ -6,7 +6,7 @@ from kazoo.client import KazooClient
 class Agent(object):
 
     def run(self):
-        zk = KazooClient(hosts="localhost:2181")
+        zk = KazooClient(hosts="192.168.0.107:2181")
         zk.start()
 
         @zk.DataWatch("/darksteel")
