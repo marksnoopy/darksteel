@@ -16,42 +16,52 @@ Options:
 from docopt import docopt
 
 from module.agent import Agent
-
 from module.daemon import Daemon
+from module.util import get_current_process_user
 
-def start():
-    daemon = Daemon("guest")
-    daemon.start_daemon()
-    try:
-        agent = Agent()
-        agent.run()
-    except KeyboardInterrupt:
-        print 'stop agent ing ...'
-        stop()
+class Command():
 
-def stop():
-    daemon = Daemon("guest")
-    daemon.kill_daemon()
-    print 'stop'
+    def __init__(self):
 
-def status():
-    print 'status'
+      self._daemon = Daemon(get_current_process_user)
 
-def restart():
-    stop()
-    start()
+    def start():
+        self._daemon.start_daemon()
+        try:
+            agent = Agent()
+            agent.run()
+            print "[STARTED]"
+        except KeyboardInterrupt:
+            print 'stop agent ing ...'
+            stop()
+
+    def stop():
+        self._daemon.kill_daemon()
+        print "[STARTED]"
+
+    def status():
+        print 'status'
+
+    def restart():
+        self.stop()
+        self.start()
 
 
 if __name__ == '__main__':
+
     arguments = docopt(__doc__, help=True, version='DarkStell Agent 0.1Beta')
 
-    actionDict = {
+    action_dictionaries = {
         "start": start,
         "stop": stop,
         "status": status,
         "restart": restart
     }
 
-    for action in actionDict.keys():
+    cmd = Command()
+    # loop the action dictionary
+    for action in action_dictionaries.keys():
+
+        # matching action and exec 
         if arguments[action]:
-          actionDict[action]()
+          cmd.actionDict[action]()

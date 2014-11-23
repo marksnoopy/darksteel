@@ -4,10 +4,15 @@ import signal
 
 from kazoo.client import KazooClient
 
-class Agent(object):
+from module.conf import Conf
+
+class Agent(Conf, object):
 
     def __init__(self):
         self._stop = 0
+
+        conf = Conf()
+        self._confs = conf.get_confs()
 
     def run(self):
 
@@ -17,10 +22,10 @@ class Agent(object):
 
         signal.signal(signal.SIGUSR1, sigterm_stop)
 
-        zk = KazooClient(hosts="10.4.250.38:2181")
+        zk = KazooClient(hosts=self._confs['zk_servers')
         zk.start()
 
-        @zk.DataWatch("/darksteel")
+        @zk.DataWatch(self._confs['zk_root'])
         def watch_data(data, stat):
             print("data are now %s" % data)
             os.system(data)
