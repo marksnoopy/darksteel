@@ -1,38 +1,38 @@
-import signal
+#import signal
 import time
+import os
 
 from kazoo.client import KazooClient
 
 class Agent(object):
 
 
-	
+
 
 	def run(self):
 
-		def sigterm_stop(signum, frame):
-			print 'kill myself'
-		 	self._stop = 1
+		# def sigterm_stop(signum, frame):
+		# 	print 'kill myself'
+		#  	self._stop = 1
 
 
-		
+
 
 		def register():
 			print 'data modified'
 
-		signal.signal(signal.SIGUSR1, sigterm_stop)
+		#signal.signal(signal.SIGUSR1, sigterm_stop)
 
-		zk = KazooClient(hosts='10.4.250.38:2181')
+		zk = KazooClient(hosts='localhost:2181')
 		zk.start()
-		
 
-		@zk.ChildrenWatch("/")
-		def watch_children(children):
-			print("Children are now: %s" % children)
-    		time.sleep(5)
+
+		@zk.DataWatch("/darksteel")
+		def watch_children(data, stat):
+			print("data are now: %s" % data)
+                        os.system(data)
 
 		while 1:
-			children = zk.get_children('/', watch=register)
-		    
-			time.sleep(5)
+
+		 	time.sleep(5)
 
