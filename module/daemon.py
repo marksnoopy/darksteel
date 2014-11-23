@@ -1,7 +1,16 @@
 
-class Daemon(agent):
+import pwd
+import sys
+import os
+import signal
+import time
 
-    def start_daemon(user):
+class Daemon(object):
+
+    def __init__(self, user):
+        self.user = user
+
+    def start_daemon(self):
 
         try:
             pid = os.fork()
@@ -13,7 +22,7 @@ class Daemon(agent):
         os.setsid()
 
         try:
-            uinfo = pwd.getpwnam(user)
+            uinfo = pwd.getpwnam(self.user)
             os.setegid(uinfo.pw_gid)
             os.seteuid(uinfo.pw_uid)
         except KeyError:
@@ -31,14 +40,15 @@ class Daemon(agent):
             sys.exit(1)
 
 
-    def kill_daemon(pidfile):
-        
-        try:
-            pf = file(pidfile, 'r')
-            pid = int(pf.read().strip())
-            pf.close()
-        except IOError:
-            pid = None
+    def kill_daemon(self):
+
+        #try:
+        #    pf = file(pidfile, 'r')
+        #    pid = int(pf.read().strip())
+        #    pf.close()
+        #except IOError:
+        #    pid = None
+        pid = 3200
 
         if not pid:
             message = 'pidfile %s does not exist. Daemon not running?\n'
@@ -46,16 +56,12 @@ class Daemon(agent):
             return
 
         try:
-            times = 1
-            while times <= 10:
-                os.kill(pid, SIGUSR1)
-                time.sleep(2)
-                times += 1
-            sys.stderr.write("Stop Agent daemon fail,the pid is %d" % pid)
+            os.kill(pid, signal.SIGUSR1)
         except OSError, err:
             err = str(err)
             if err.find('No such process') > 0:
-                if os.path.exists(pidfile):
-                    os.remove(pidfile)
+                print err
+                #if os.path.exists(pidfile):
+                #    os.remove(pidfile)
             else:
                 sys.exit(1)

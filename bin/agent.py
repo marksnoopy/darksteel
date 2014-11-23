@@ -2,7 +2,7 @@
 
 Usage:
   run.py [start | stop | status | restart]
-  
+
 Arguments:
   start         start the agent process
   stop          shutdown the agent proces
@@ -20,9 +20,8 @@ from module.agent import Agent
 from module.daemon import Daemon
 
 def start():
-    daemon = Daemon()
-    daemon.start_daemon("mayong")
-
+    daemon = Daemon("mayong")
+    daemon.start_daemon()
     try:
         agent = Agent()
         agent.run()
@@ -31,6 +30,8 @@ def start():
         stop()
 
 def stop():
+    daemon = Daemon("mayong")
+    daemon.kill_daemon()
     print 'stop'
 
 def status():
