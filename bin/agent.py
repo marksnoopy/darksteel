@@ -17,37 +17,34 @@ from docopt import docopt
 from module.agent import Agent
 
 def start():
-  try:
-      agent = Agent()
-      agent.run()
-  except KeyboardInterrupt:
-      print 'stop agent ing ...'
-      stop()
-  
-	
+    try:
+        agent = Agent()
+        agent.run()
+    except KeyboardInterrupt:
+        print 'stop agent ing ...'
+        stop()
 
 def stop():
-	print 'stop'
+    print 'stop'
 
 def status():
-	print 'status'
+    print 'status'
 
 def restart():
-	stop()
-	start()
+    stop()
+    start()
 
 
 if __name__ == '__main__':
     arguments = docopt(__doc__, help=True, version='DarkStell Agent 0.1Beta')
 
     actionDict = {
-    	"start": start,
-    	"stop": stop,
-    	"status": status,
-    	"restart": restart
+        "start": start,
+        "stop": stop,
+        "status": status,
+        "restart": restart
     }
 
     for action in actionDict.keys():
-    	if arguments[action]:
-    		actionDict[action]()
-
+        if arguments[action]:
+          actionDict[action]()
