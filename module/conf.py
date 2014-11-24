@@ -20,18 +20,24 @@ class Conf(object):
 
     def read_config(self, conf_path):
         opts = {}
-
         confparser = ConfigParser()
 
         if os.path.exists(conf_path):
-            confparser.read(conf_path)
-            for k, v in confparser.items("main"):
-                opts[k] = v
 
+            confparser.read(conf_path)
+            sections = confparser.sections()
+
+            for section in sections:
+
+                for k, v in confparser.items(section):
+
+                    opts[k] = v
+            
         return opts
 
 if __name__ == '__main__':
     conf = Conf()
     opts = conf.get_confs()
     print opts
+    
 
