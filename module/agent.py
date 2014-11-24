@@ -17,7 +17,7 @@ class Agent(object):
 
         signal.signal(signal.SIGUSR1, sigterm_stop)
 
-        zk = KazooClient(hosts="192.168.0.107:2181")
+        zk = KazooClient(hosts="10.4.250.38:2181")
         zk.start()
 
         @zk.DataWatch("/darksteel")

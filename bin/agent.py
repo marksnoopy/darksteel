@@ -20,7 +20,7 @@ from module.agent import Agent
 from module.daemon import Daemon
 
 def start():
-    daemon = Daemon("mayong")
+    daemon = Daemon("guest")
     daemon.start_daemon()
     try:
         agent = Agent()
@@ -30,7 +30,7 @@ def start():
         stop()
 
 def stop():
-    daemon = Daemon("mayong")
+    daemon = Daemon("guest")
     daemon.kill_daemon()
     print 'stop'
 

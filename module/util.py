@@ -5,6 +5,7 @@ def get_root_path():
 
 def get_absolute_path(relative_path):
     abs_path = ''
-    if rel_path:
+    if relative_path:
         abs_path = os.path.join(get_root_path(), relative_path)
+        
     return abs_path
