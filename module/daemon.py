@@ -59,3 +59,26 @@ class Daemon(agent):
                     os.remove(pidfile)
             else:
                 sys.exit(1)
+
+    def set_pidfile(pidfile):
+        try:
+            pf = file(pidfile, 'r')
+            pid = int(pf.read().strip())
+            pf.close()
+        except IOError:
+            pid = None
+
+        if pid:
+            message = 'pidfile %s already exist. Daemon already running?\n'
+            sys.stderr.write(message % pidfile)
+            sys.exit(1)
+
+        pdir = os.path.dirname(pidfile)
+        if not os.path.isdir(pdir):
+            os.makedirs(pdir)
+        try:
+            with open(pidfile, 'w+') as f:
+                f.write(str(os.getpid()))
+        except IOError, err:
+            sys.stderr.write(err.message)
+            sys.exit(1)
