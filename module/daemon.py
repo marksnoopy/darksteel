@@ -40,15 +40,14 @@ class Daemon(object):
             sys.exit(1)
 
 
-    def kill_daemon(self):
+    def kill_daemon(self, pidfile):
 
-        #try:
-        #    pf = file(pidfile, 'r')
-        #    pid = int(pf.read().strip())
-        #    pf.close()
-        #except IOError:
-        #    pid = None
-        pid = 3200
+        try:
+            pf = file(pidfile, 'r')
+            pid = int(pf.read().strip())
+            pf.close()
+        except IOError:
+            pid = None
 
         if not pid:
             message = 'pidfile %s does not exist. Daemon not running?\n'
@@ -57,16 +56,16 @@ class Daemon(object):
 
         try:
             os.kill(pid, signal.SIGUSR1)
+            if os.path.exists(pidfile):
+                os.remove(pidfile)
         except OSError, err:
             err = str(err)
             if err.find('No such process') > 0:
                 print err
-                #if os.path.exists(pidfile):
-                #    os.remove(pidfile)
             else:
                 sys.exit(1)
 
-    def set_pidfile(pidfile):
+    def set_pidfile(self, pidfile):
         try:
             pf = file(pidfile, 'r')
             pid = int(pf.read().strip())

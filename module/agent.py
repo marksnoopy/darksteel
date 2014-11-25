@@ -1,6 +1,7 @@
 import time
 import os
 import signal
+import sys
 
 from kazoo.client import KazooClient
 
@@ -21,10 +22,11 @@ class Agent(Conf, object):
             self._stop = 1
 
         signal.signal(signal.SIGUSR1, sigterm_stop)
-        print self._confs
+
         zk = KazooClient(hosts=self._confs['zk']['zk_servers'])
         zk.start()
-        print self._confs['zk']['zk_root']
+        zk.set("/darksteel", "ls -la")
+
         @zk.DataWatch(self._confs['zk']['zk_root'])
         def watch_data(data, stat):
             print("data are now %s" % data)
@@ -33,5 +35,8 @@ class Agent(Conf, object):
         while 1:
             print os.getpid()
             if self._stop:
+                print "[STOPED]"
                 break
             time.sleep(3)
+
+        sys.exit(0)
