@@ -8,7 +8,7 @@ import time
 class Daemon(object):
 
     def __init__(self, user):
-        self.user = user
+        self._user = user
 
     def start_daemon(self):
 
@@ -22,7 +22,7 @@ class Daemon(object):
         os.setsid()
 
         try:
-            uinfo = pwd.getpwnam(self.user)
+            uinfo = pwd.getpwnam(self._user)
             os.setegid(uinfo.pw_gid)
             os.seteuid(uinfo.pw_uid)
         except KeyError:

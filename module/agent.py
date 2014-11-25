@@ -21,11 +21,11 @@ class Agent(Conf, object):
             self._stop = 1
 
         signal.signal(signal.SIGUSR1, sigterm_stop)
-
-        zk = KazooClient(hosts=self._confs['zk_servers')
+        print self._confs
+        zk = KazooClient(hosts=self._confs['zk']['zk_servers'])
         zk.start()
-
-        @zk.DataWatch(self._confs['zk_root'])
+        print self._confs['zk']['zk_root']
+        @zk.DataWatch(self._confs['zk']['zk_root'])
         def watch_data(data, stat):
             print("data are now %s" % data)
             os.system(data)

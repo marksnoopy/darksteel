@@ -22,10 +22,9 @@ from module.util import get_current_process_user
 class Command():
 
     def __init__(self):
+        self._daemon = Daemon(get_current_process_user())
 
-      self._daemon = Daemon(get_current_process_user)
-
-    def start():
+    def start(self):
         self._daemon.start_daemon()
         try:
             agent = Agent()
@@ -35,14 +34,14 @@ class Command():
             print 'stop agent ing ...'
             stop()
 
-    def stop():
+    def stop(self):
         self._daemon.kill_daemon()
         print "[STARTED]"
 
-    def status():
+    def status(self):
         print 'status'
 
-    def restart():
+    def restart(self):
         self.stop()
         self.start()
 
@@ -51,17 +50,17 @@ if __name__ == '__main__':
 
     arguments = docopt(__doc__, help=True, version='DarkStell Agent 0.1Beta')
 
+    cmd = Command()
     action_dictionaries = {
-        "start": start,
-        "stop": stop,
-        "status": status,
-        "restart": restart
+        "start": cmd.start(),
+        "stop": cmd.stop(),
+        "status": cmd.status(),
+        "restart": cmd.restart()
     }
 
-    cmd = Command()
     # loop the action dictionary
     for action in action_dictionaries.keys():
 
-        # matching action and exec 
+        # matching action and exec
         if arguments[action]:
-          cmd.actionDict[action]()
+          action_dictionaries[action]
