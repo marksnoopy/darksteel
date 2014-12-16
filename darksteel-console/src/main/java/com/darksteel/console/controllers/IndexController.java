@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 
-    @RequestMapping("/")
+    @RequestMapping("/index.do")
     public String index(Model model) {
         model.addAttribute("message", "Hello World!");  
         
