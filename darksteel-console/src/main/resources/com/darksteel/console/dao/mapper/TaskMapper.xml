@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.darksteel.console.dao.TaskMapper" >
+   <resultMap id="TaskMapper" type="com.darksteel.console.model.Task" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="task_name" property="taskName" jdbcType="CHAR" />
+        <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    </resultMap>
+    
+    <select id="getAll" resultMap="TaskMapper">
+        select * from tb_task 
+    </select>
+</mapper>
